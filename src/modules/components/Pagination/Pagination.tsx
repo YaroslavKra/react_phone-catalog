@@ -9,7 +9,31 @@ type Props = {
 };
 
 export const Pagination = ({ total, current, onChange }: Props) => {
-  const pages = Array.from({ length: total }, (_, index) => index + 1);
+  const getPages = () => {
+    if (total <= 7) {
+      return Array.from({ length: total }, (_, index) => index + 1);
+    }
+
+    if (current <= 4) {
+      return [1, 2, 3, 4, 5, '...', total] as const;
+    }
+
+    if (current >= total - 3) {
+      return [
+        1,
+        '...',
+        total - 4,
+        total - 3,
+        total - 2,
+        total - 1,
+        total,
+      ] as const;
+    }
+
+    return [1, '...', current - 1, current, current + 1, '...', total] as const;
+  };
+
+  const pages = getPages();
 
   return (
     <nav className={styles.pagination} aria-label="Pagination">
@@ -24,20 +48,24 @@ export const Pagination = ({ total, current, onChange }: Props) => {
       </button>
 
       <ul className={styles.list}>
-        {pages.map(pageNumber => (
-          <li key={pageNumber}>
-            <button
-              type="button"
-              className={
-                pageNumber === current
-                  ? `${styles.page} ${styles.pageActive}`
-                  : styles.page
-              }
-              aria-current={pageNumber === current}
-              onClick={() => onChange(pageNumber)}
-            >
-              {pageNumber}
-            </button>
+        {pages.map((pageNumber, index) => (
+          <li key={`${pageNumber}-${index}`}>
+            {pageNumber === '...' ? (
+              <span className={styles.ellipsis}>...</span>
+            ) : (
+              <button
+                type="button"
+                className={
+                  pageNumber === current
+                    ? `${styles.page} ${styles.pageActive}`
+                    : styles.page
+                }
+                aria-current={pageNumber === current ? 'page' : undefined}
+                onClick={() => onChange(pageNumber)}
+              >
+                {pageNumber}
+              </button>
+            )}
           </li>
         ))}
       </ul>

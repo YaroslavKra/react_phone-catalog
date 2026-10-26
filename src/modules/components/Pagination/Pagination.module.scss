@@ -18,11 +18,11 @@
   cursor: pointer;
   transition: background-color 0.2s ease;
 
-    &:disabled {
+  &:disabled {
     opacity: 0.3;
     cursor: default;
   }
-  
+
   &:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.08);
   }
@@ -60,4 +60,30 @@
   background: #905bff;
   border-color: #905bff;
   color: #fff;
+}
+
+.ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 639px) {
+  .pagination {
+    gap: 4px;
+  }
+
+  .list {
+    gap: 4px;
+  }
+
+  .page,
+  .arrow,
+  .ellipsis {
+    width: 28px;
+    height: 28px;
+  }
 }
